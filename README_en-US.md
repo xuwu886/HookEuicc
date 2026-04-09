@@ -9,6 +9,7 @@ For apps that do not directly display the eSIM activation code, this module will
 ### Non-eUICC Mode
 
 Fixes access issues on certain devices where the eUICC [ISD-R] has exclusive access. 
+**Example:** Using a DIY-soldered ST33 chip on some Qualcomm devices.
 
 > [!NOTE]
 > You must select `com.android.phone` in the scope and reboot. 
