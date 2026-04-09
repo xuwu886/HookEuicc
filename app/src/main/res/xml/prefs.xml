@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="enable_hook"
+        android:title="@string/title_enable_hook"
+        android:summary="@string/summary_enable_hook"
+        android:defaultValue="false" />
+    <SwitchPreference
+        android:key="hide_icon"
+        android:title="@string/title_hide_icon"
+        android:summary="@string/summary_hide_icon"
+        android:defaultValue="false" />
+</PreferenceScreen>

@@ -1,4 +1,4 @@
-package cn.unicorn369;
+package cn.unicorn369.HookEuicc;
 
 import android.app.Activity;
 import android.app.AndroidAppHelper;
@@ -21,21 +21,40 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-//import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-public class HookEuicc implements IXposedHookLoadPackage {
-    private static final String TAG = "HookEUICC";
-    private static final String Title = "eSIM激活码";
+public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit {
+    private static final String Title = "eSIM Code";
 
     private static String initActivationCode = "";
     private static Activity activity;
 
+    private static final String PREF_NAME = "conf";
+    private static final String KEY_ENABLE_HOOK = "enable_hook";
+
+    private XSharedPreferences prefs;
+
+    @Override
+    public void initZygote(StartupParam startupParam) throws Throwable {
+        prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID, "conf");
+    }
+
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+		
+		boolean enableHook = prefs.getBoolean(KEY_ENABLE_HOOK, false);
+		
+        if (!enableHook) {
+            XposedBridge.log("HookEuicc 已禁用: " + lpparam.packageName);
+            return;
+        }
+		
         //Class
         Class<?> packageManagerClass = XposedHelpers.findClass("android.app.ApplicationPackageManager", lpparam.classLoader);
 
@@ -179,7 +198,7 @@ public class HookEuicc implements IXposedHookLoadPackage {
     private ResolveInfo createFakeResolveInfo() {
         ResolveInfo fakeInfo = new ResolveInfo();
         fakeInfo.serviceInfo = new ServiceInfo();
-        fakeInfo.serviceInfo.packageName = "cn.unicorn369.HookEuicc";
+        fakeInfo.serviceInfo.packageName = BuildConfig.APPLICATION_ID;
         fakeInfo.serviceInfo.name = "HookEuiccService";
         fakeInfo.serviceInfo.permission = "android.permission.BIND_EUICC_SERVICE";
         return fakeInfo;

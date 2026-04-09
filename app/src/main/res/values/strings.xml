@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">HookEuicc</string>
     <string name="xposeddescription">伪装支持eSIM，获取eSIM激活码</string>
+
+    <string name="not_supported">未激活 Xposed 或您的环境可能不支持 EdXposed，请检查。</string>
+    <string name="ignore">忽略</string>
+
+    <string name="title_enable_hook">启用 Hook</string>
+    <string name="summary_enable_hook">开启后将对目标应用进行 Hook 操作</string>
+
+    <string name="title_hide_icon">隐藏图标</string>
+    <string name="summary_hide_icon">隐藏模块在桌面上的启动图标</string>
 </resources>
