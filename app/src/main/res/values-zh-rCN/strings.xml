@@ -2,7 +2,7 @@
     <string name="app_name">HookEuicc</string>
     <string name="xposeddescription">解除某些软件对eSIM的要求，也可用于获取eSIM代码</string>
 
-    <string name="not_supported">未激活 Xposed 或您的环境可能不支持 EdXposed，请检查。</string>
+    <string name="not_supported">LSPosed 未激活或当前环境不支持，请检查。</string>
     <string name="ignore">忽略</string>
 
     <string name="title_enable_hook">Hook Euicc</string>
