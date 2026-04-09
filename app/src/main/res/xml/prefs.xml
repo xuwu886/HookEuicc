@@ -6,6 +6,11 @@
         android:summary="@string/summary_enable_hook"
         android:defaultValue="false" />
     <SwitchPreference
+        android:key="bypass_omapi"
+        android:title="@string/title_bypass_omapi"
+        android:summary="@string/summary_bypass_omapi"
+        android:defaultValue="false" />
+    <SwitchPreference
         android:key="hide_icon"
         android:title="@string/title_hide_icon"
         android:summary="@string/summary_hide_icon"

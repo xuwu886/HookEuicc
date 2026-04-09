@@ -24,6 +24,7 @@ import java.util.List;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -37,6 +38,7 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
     private static final String PREF_NAME = "conf";
     private static final String KEY_ENABLE_HOOK = "enable_hook";
+    private static final String KEY_BYPASS_OMAPI = "bypass_omapi";
 
     private XSharedPreferences prefs;
 
@@ -47,14 +49,29 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-		
-		boolean enableHook = prefs.getBoolean(KEY_ENABLE_HOOK, false);
-		
+        
+        boolean enableHook = prefs.getBoolean(KEY_ENABLE_HOOK, true);
+        boolean bypassOmapi = prefs.getBoolean(KEY_BYPASS_OMAPI, false);
+
+        if (bypassOmapi && lpparam.packageName.equals("com.android.se")) {
+            XposedHelpers.findAndHookMethod("com.android.se.security.AccessControlEnforcer",
+            lpparam.classLoader, "readSecurityProfile",
+            new XC_MethodReplacement() {
+                @Override
+                protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                    XposedHelpers.setBooleanField(param.thisObject, "mUseArf", false);
+                    XposedHelpers.setBooleanField(param.thisObject, "mUseAra", false);
+                    XposedHelpers.setBooleanField(param.thisObject, "mFullAccess", true);
+                    return null;
+                }
+            });
+            XposedBridge.log("HookEuicc-bypassOmapi 已启用: " + lpparam.packageName);
+        }
+
         if (!enableHook) {
             XposedBridge.log("HookEuicc 已禁用: " + lpparam.packageName);
             return;
         }
-		
         //Class
         Class<?> packageManagerClass = XposedHelpers.findClass("android.app.ApplicationPackageManager", lpparam.classLoader);
 
@@ -96,12 +113,7 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
         );
         XposedHelpers.findAndHookMethod(
             EuiccManager.class, "isEnabled",
-            new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    param.setResult(true);
-                }
-            }
+            XC_MethodReplacement.returnConstant(true)
         );
 
         //获取eSIM激活码
@@ -153,12 +165,7 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
         );
         XposedHelpers.findAndHookMethod(
             TelephonyManager.class, "getCardIdForDefaultEuicc",
-            new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    param.setResult(0);
-                }
-            }
+            XC_MethodReplacement.returnConstant(0)
         );
     }
 
