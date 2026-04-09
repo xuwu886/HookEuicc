@@ -2,7 +2,7 @@
     <string name="app_name">HookEuicc</string>
     <string name="xposeddescription">Bypasses eSIM requirements for certain apps and can be used to retrieve eSIM codes.</string>
 
-    <string name="not_supported">Xposed is not activated, or your environment may not support EdXposed. Please check your settings.</string>
+    <string name="not_supported">LSPosed is not activated, or your environment is not supported. Please check your framework status.</string>
     <string name="ignore">Ignore</string>
 
     <string name="title_enable_hook">Hook Euicc</string>
