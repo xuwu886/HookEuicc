@@ -7,14 +7,18 @@ For apps that do not directly display the eSIM activation code, this module will
 ## Additional Features
 
 ### Non-eUICC Mode
-> Fixes access issues on certain devices where the eUICC [ISD-R] has exclusive access. 
-> **Example:** Using a DIY-soldered ST33 chip on some Qualcomm devices.
-> 
-> **Note:** You must select `com.android.phone` in the scope and reboot. 
+
+Fixes access issues on certain devices where the eUICC [ISD-R] has exclusive access. 
+
+> [!NOTE]
+> You must select `com.android.phone` in the scope and reboot. 
 > Hot-swapping is not supported; ensure the eUICC is inserted before powering on or rebooting.
 
 ### OMAPI Bypass
-> Bypasses ARA (Access Rule Application) and ARF (Access Rule File) restrictions. 
-> Typically used to grant OMAPI access to cards that lack ARA.
-> 
-> **Note:** You must select `com.android.se` in the scope and reboot (or run: `su -c killall com.android.se`).
+
+Bypasses ARA (Access Rule Application) and ARF (Access Rule File) restrictions. 
+Typically used to grant OMAPI access to cards that lack ARA.
+
+> [!NOTE]
+> You must select `com.android.se` in the scope and reboot (or run: `su -c killall com.android.se`).
+> Do not enable this unless specifically required.
