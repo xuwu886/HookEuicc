@@ -12,7 +12,7 @@
     <string name="summary_no_euicc">eUICC [ISD-R] の排他的アクセス権を持つデバイスの問題を修正します。\n[com.android.phone] を選択して再起動する必要があります。\n注意: ホットスワップには対応していません。再起動前に eUICC カードを挿入してください。</string>
 
     <string name="title_bypass_omapi">OMAPI をバイパス</string>
-    <string name="summary_bypass_omapi">ARA/ARF の制限をバイパスします。ARA のないカードで OMAPI にアクセスする場合で使用されます。\n[com.android.se] を選択して再起動する必要があります。\n注意: 通常はこの機能を有効化しないでください。</string>
+    <string name="summary_bypass_omapi">ARA/ARF の制限をバイパスします。通常は ARA のないカードで OMAPI にアクセスする場合で使用されます。\n[com.android.se] を選択して再起動する必要があります。\n注意: 通常はこの機能を有効化しないでください。</string>
 
     <string name="title_hide_icon">アイコンを非表示にする</string>
     <string name="summary_hide_icon">ランチャーからアイコンを非表示にします。</string>
