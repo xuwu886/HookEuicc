@@ -38,6 +38,7 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
     private static final String PREF_NAME = "conf";
     private static final String KEY_ENABLE_HOOK = "enable_hook";
+    private static final String KEY_NO_EUICC = "no_euicc";
     private static final String KEY_BYPASS_OMAPI = "bypass_omapi";
 
     private XSharedPreferences prefs;
@@ -51,7 +52,17 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         
         boolean enableHook = prefs.getBoolean(KEY_ENABLE_HOOK, true);
+        boolean noEuicc = prefs.getBoolean(KEY_NO_EUICC, false);
         boolean bypassOmapi = prefs.getBoolean(KEY_BYPASS_OMAPI, false);
+
+        if (noEuicc && lpparam.packageName.equals("com.android.phone")) {
+            XposedHelpers.findAndHookMethod(
+                "com.android.internal.telephony.uicc.UiccSlot", 
+                lpparam.classLoader, "isEuicc", 
+                XC_MethodReplacement.returnConstant(false)
+            );
+            XposedBridge.log("HookEuicc-bypassOmapi 已启用: " + lpparam.packageName);
+        }
 
         if (bypassOmapi && lpparam.packageName.equals("com.android.se")) {
             XposedHelpers.findAndHookMethod("com.android.se.security.AccessControlEnforcer",
@@ -124,6 +135,7 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     String activationCode = (String) param.args[0];
                     if (activationCode != null) {
+                        XposedBridge.log("HookEuicc-eSIM Code: " + activationCode);
                         shareCode(activationCode);
                     }
                 }
@@ -138,6 +150,7 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     String activationCode = (String) param.getResult();
                     if (activationCode != null) {
+                        XposedBridge.log("HookEuicc-eSIM Code: " + activationCode);
                         shareCode(activationCode);
                     }
                 }

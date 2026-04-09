@@ -6,6 +6,11 @@
         android:summary="@string/summary_enable_hook"
         android:defaultValue="false" />
     <SwitchPreference
+        android:key="no_euicc"
+        android:title="@string/title_no_euicc"
+        android:summary="@string/summary_no_euicc"
+        android:defaultValue="false" />
+    <SwitchPreference
         android:key="bypass_omapi"
         android:title="@string/title_bypass_omapi"
         android:summary="@string/summary_bypass_omapi"

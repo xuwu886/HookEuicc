@@ -42,6 +42,7 @@ public class SettingsActivity extends Activity {
             implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         private SwitchPreference enableHookPref;
+        private SwitchPreference noEuiccPref;
         private SwitchPreference bypassOmapiPref;
         private SwitchPreference hideIconPref;
 
@@ -52,6 +53,7 @@ public class SettingsActivity extends Activity {
             addPreferencesFromResource(R.xml.prefs);
 
             enableHookPref = (SwitchPreference) findPreference("enable_hook");
+            noEuiccPref = (SwitchPreference) findPreference("no_euicc");
             bypassOmapiPref = (SwitchPreference) findPreference("bypass_omapi");
             hideIconPref = (SwitchPreference) findPreference("hide_icon");
         }
