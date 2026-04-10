@@ -8,6 +8,11 @@
     <string name="title_enable_hook">Hook Euicc</string>
     <string name="summary_enable_hook">伪装支持eSIM，可用于获取eSIM代码\n勾选需要伪装的应用即可</string>
 
+    <string name="title_enable_fake_eid">伪装 EID</string>
+    <string name="summary_enable_fake_eid">注: 仅欺骗软件，部分应用可能无效</string>
+
+    <string name="title_fake_eid_value">EID (32位)</string>
+
     <string name="title_no_euicc">我不是eUICC卡</string>
     <string name="summary_no_euicc">可用于部分设备与eUICC卡[ISD-R]独占，导致无法访问的问题\n需勾选[com.android.phone]并重启手机\n注: 无法热插拔卡，请插入eUICC卡后再重启手机</string>
 

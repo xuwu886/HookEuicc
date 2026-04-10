@@ -38,8 +38,11 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
     private static final String PREF_NAME = "conf";
     private static final String KEY_ENABLE_HOOK = "enable_hook";
-    //private static final String KEY_NO_EUICC = "no_euicc";
-    private static final String KEY_BYPASS_OMAPI = "bypass_omapi";
+    private static final String KEY_ENABLE_FAKE_EID = "enable_fake_eid";
+    //private static final String KEY_ENABLE_NO_EUICC = "enable_no_euicc";
+    private static final String KEY_ENABLE_BYPASS_OMAPI = "enable_bypass_omapi";
+
+    private static final String KEY_VALUE_FAKE_EID = "value_fake_eid";
 
     private XSharedPreferences prefs;
 
@@ -52,10 +55,12 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         
         boolean enableHook = prefs.getBoolean(KEY_ENABLE_HOOK, true);
-        //boolean noEuicc = prefs.getBoolean(KEY_NO_EUICC, false);
-        boolean bypassOmapi = prefs.getBoolean(KEY_BYPASS_OMAPI, false);
+        boolean enableFakeEid = prefs.getBoolean(KEY_ENABLE_FAKE_EID, false);
+        //boolean enablenoEuicc = prefs.getBoolean(KEY_ENABLE_NO_EUICC, false);
+        boolean enableBypassOmapi = prefs.getBoolean(KEY_ENABLE_BYPASS_OMAPI, false);
+
         /* 机型受限，暂不使用
-        if (noEuicc && lpparam.packageName.equals("com.android.phone")) {
+        if (enablenoEuicc && lpparam.packageName.equals("com.android.phone")) {
             XposedHelpers.findAndHookMethod(
                 "com.android.internal.telephony.uicc.UiccSlot", 
                 lpparam.classLoader, "isEuicc", 
@@ -79,7 +84,16 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
             //);
         }
         */
-        if (bypassOmapi && lpparam.packageName.equals("com.android.se")) {
+
+        if (enableFakeEid) {
+            String valueFakeEid = prefs.getString(KEY_VALUE_FAKE_EID, "89044123456789876543210123456789");
+            XposedHelpers.findAndHookMethod(
+                EuiccManager.class, "getEid",
+                XC_MethodReplacement.returnConstant(valueFakeEid)
+            );
+		}
+
+        if (enableBypassOmapi && lpparam.packageName.equals("com.android.se")) {
             XposedHelpers.findAndHookMethod("com.android.se.security.AccessControlEnforcer",
             lpparam.classLoader, "readSecurityProfile",
             new XC_MethodReplacement() {

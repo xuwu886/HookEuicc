@@ -5,20 +5,33 @@
         android:title="@string/title_enable_hook"
         android:summary="@string/summary_enable_hook"
         android:defaultValue="false" />
+    <SwitchPreference
+        android:key="enable_fake_eid"
+        android:title="@string/title_enable_fake_eid"
+        android:summary="@string/summary_enable_fake_eid"
+        android:defaultValue="false" />
+    <EditTextPreference
+        android:key="value_fake_eid"
+        android:title="@string/title_fake_eid_value"
+        android:summary="@string/summary_fake_eid_value"
+        android:defaultValue=""
+        android:inputType="number"
+        android:maxLength="32"
+        android:dependency="enable_fake_eid" />
     <!-- 机型受限，暂不使用
     <SwitchPreference
-        android:key="no_euicc"
+        android:key="enable_no_euicc"
         android:title="@string/title_no_euicc"
         android:summary="@string/summary_no_euicc"
         android:defaultValue="false" />
     -->
     <SwitchPreference
-        android:key="bypass_omapi"
+        android:key="enable_bypass_omapi"
         android:title="@string/title_bypass_omapi"
         android:summary="@string/summary_bypass_omapi"
         android:defaultValue="false" />
     <SwitchPreference
-        android:key="hide_icon"
+        android:key="enable_hide_icon"
         android:title="@string/title_hide_icon"
         android:summary="@string/summary_hide_icon"
         android:defaultValue="false" />

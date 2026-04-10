@@ -8,6 +8,12 @@
     <string name="title_enable_hook">Hook Euicc</string>
     <string name="summary_enable_hook">Spoof eSIM support to retrieve eSIM codes.\nSelect the apps you want to spoof.</string>
 
+    <string name="title_enable_fake_eid">Fake EID</string>
+    <string name="summary_enable_fake_eid"></string>
+
+    <string name="title_fake_eid_value">EID (32-bit)</string>
+    <string name="summary_fake_eid_value">89044123456789876543210123456789</string>
+
     <string name="title_no_euicc">Non-eUICC Mode</string>
     <string name="summary_no_euicc">Fixes access issues on devices where eUICC [ISD-R] has exclusive access.\nRequires selecting [com.android.phone] and rebooting.\nNote: Hot-swapping is not supported. Insert the eUICC card before rebooting.</string>
 

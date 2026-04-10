@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.view.View;
@@ -42,9 +43,12 @@ public class SettingsActivity extends Activity {
             implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         private SwitchPreference enableHookPref;
-        //private SwitchPreference noEuiccPref;
-        private SwitchPreference bypassOmapiPref;
-        private SwitchPreference hideIconPref;
+        //private SwitchPreference enableNoEuiccPref;
+        private SwitchPreference enableBypassOmapiPref;
+        private SwitchPreference enableHideIconPref;
+
+        private SwitchPreference enableFakeEidPref;
+        private EditTextPreference valueFakeEidPref;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -53,9 +57,28 @@ public class SettingsActivity extends Activity {
             addPreferencesFromResource(R.xml.prefs);
 
             enableHookPref = (SwitchPreference) findPreference("enable_hook");
-            //noEuiccPref = (SwitchPreference) findPreference("no_euicc");
-            bypassOmapiPref = (SwitchPreference) findPreference("bypass_omapi");
-            hideIconPref = (SwitchPreference) findPreference("hide_icon");
+            //enableNoEuiccPref = (SwitchPreference) findPreference("enable_no_euicc");
+            enableBypassOmapiPref = (SwitchPreference) findPreference("enable_bypass_omapi");
+            enableHideIconPref = (SwitchPreference) findPreference("enable_hide_icon");
+
+            enableFakeEidPref = (SwitchPreference) findPreference("enable_fake_eid");
+            valueFakeEidPref = (EditTextPreference) findPreference("value_fake_eid");
+
+            valueFakeEidPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                String value = (String) newValue;
+                if (value.isEmpty()) {
+                    preference.setSummary(getString(R.string.summary_fake_eid_value));
+                } else {
+                    preference.setSummary(value);
+                }
+                return true;
+            });
+
+            SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+            String currentEid = prefs.getString("value_fake_eid", "");
+            if (!currentEid.isEmpty()) {
+                valueFakeEidPref.setSummary(currentEid);
+            }
         }
 
         @Override
@@ -75,8 +98,8 @@ public class SettingsActivity extends Activity {
             super.onResume();
             SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
             prefs.registerOnSharedPreferenceChangeListener(this);
-            boolean hide = prefs.getBoolean("hide_icon", false);
-            hideIconPref.setChecked(hide);
+            boolean hide = prefs.getBoolean("enable_hide_icon", false);
+            enableHideIconPref.setChecked(hide);
             applyIconVisibility(hide);
         }
 
@@ -88,8 +111,8 @@ public class SettingsActivity extends Activity {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if ("hide_icon".equals(key)) {
-                boolean hide = sharedPreferences.getBoolean("hide_icon", false);
+            if ("enable_hide_icon".equals(key)) {
+                boolean hide = sharedPreferences.getBoolean("enable_hide_icon", false);
                 applyIconVisibility(hide);
             }
         }
