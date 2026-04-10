@@ -38,7 +38,7 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
     private static final String PREF_NAME = "conf";
     private static final String KEY_ENABLE_HOOK = "enable_hook";
-    private static final String KEY_NO_EUICC = "no_euicc";
+    //private static final String KEY_NO_EUICC = "no_euicc";
     private static final String KEY_BYPASS_OMAPI = "bypass_omapi";
 
     private XSharedPreferences prefs;
@@ -52,9 +52,9 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         
         boolean enableHook = prefs.getBoolean(KEY_ENABLE_HOOK, true);
-        boolean noEuicc = prefs.getBoolean(KEY_NO_EUICC, false);
+        //boolean noEuicc = prefs.getBoolean(KEY_NO_EUICC, false);
         boolean bypassOmapi = prefs.getBoolean(KEY_BYPASS_OMAPI, false);
-
+        /* 机型受限，暂不使用
         if (noEuicc && lpparam.packageName.equals("com.android.phone")) {
             XposedHelpers.findAndHookMethod(
                 "com.android.internal.telephony.uicc.UiccSlot", 
@@ -78,7 +78,7 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
             //    XC_MethodReplacement.returnConstant(false)
             //);
         }
-
+        */
         if (bypassOmapi && lpparam.packageName.equals("com.android.se")) {
             XposedHelpers.findAndHookMethod("com.android.se.security.AccessControlEnforcer",
             lpparam.classLoader, "readSecurityProfile",
@@ -92,10 +92,6 @@ public class XposedInit implements IXposedHookLoadPackage, IXposedHookZygoteInit
                 }
             });
         }
-
-        XposedBridge.log("HookEuicc-enableHook: " + enableHook);
-        XposedBridge.log("HookEuicc-noEuicc: " + noEuicc);
-        XposedBridge.log("HookEuicc-bypassOmapi: " + bypassOmapi);
 
         if (!enableHook) {
             return;

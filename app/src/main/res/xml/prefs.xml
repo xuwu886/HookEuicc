@@ -5,11 +5,13 @@
         android:title="@string/title_enable_hook"
         android:summary="@string/summary_enable_hook"
         android:defaultValue="false" />
+    <!-- 机型受限，暂不使用
     <SwitchPreference
         android:key="no_euicc"
         android:title="@string/title_no_euicc"
         android:summary="@string/summary_no_euicc"
         android:defaultValue="false" />
+    -->
     <SwitchPreference
         android:key="bypass_omapi"
         android:title="@string/title_bypass_omapi"
